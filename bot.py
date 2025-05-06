@@ -25,43 +25,56 @@ class Bot:
                 ])
 
     def log_game_state(self, game_state):
-        """Log the current game state to the CSV file."""
-        with open(self.csv_file, mode='a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([
-                game_state.timer,
-                game_state.fight_result,
-                game_state.has_round_started,
-                game_state.is_round_over,
-                game_state.player1.player_id,
-                game_state.player1.health,
-                game_state.player1.x_coord,
-                game_state.player1.y_coord,
-                game_state.player1.is_jumping,
-                game_state.player1.is_crouching,
-                game_state.player1.is_player_in_move,
-                game_state.player1.move_id,
-                game_state.player1.player_buttons.up,
-                game_state.player1.player_buttons.down,
-                game_state.player1.player_buttons.right,
-                game_state.player1.player_buttons.left,
-                game_state.player2.player_id,
-                game_state.player2.health,
-                game_state.player2.x_coord,
-                game_state.player2.y_coord,
-                game_state.player2.is_jumping,
-                game_state.player2.is_crouching,
-                game_state.player2.is_player_in_move,
-                game_state.player2.move_id,
-                game_state.player2.player_buttons.up,
-                game_state.player2.player_buttons.down,
-                game_state.player2.player_buttons.right,
-                game_state.player2.player_buttons.left
-            ])
+        """Log the current game state to the CSV file only if a move is made by the player."""
+        # Check if any button is pressed by Player 1
+        if (game_state.player1.player_buttons.up or
+            game_state.player1.player_buttons.down or
+            game_state.player1.player_buttons.left or
+            game_state.player1.player_buttons.right or
+            game_state.player1.player_buttons.Y or
+            game_state.player1.player_buttons.B or
+            game_state.player1.player_buttons.X or
+            game_state.player1.player_buttons.A or
+            game_state.player1.player_buttons.L or
+            game_state.player1.player_buttons.R):
+            
+            # Log the game state to the CSV file
+            with open(self.csv_file, mode='a', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow([
+                    game_state.timer,
+                    game_state.fight_result,
+                    game_state.has_round_started,
+                    game_state.is_round_over,
+                    game_state.player1.player_id,
+                    game_state.player1.health,
+                    game_state.player1.x_coord,
+                    game_state.player1.y_coord,
+                    game_state.player1.is_jumping,
+                    game_state.player1.is_crouching,
+                    game_state.player1.is_player_in_move,
+                    game_state.player1.move_id,
+                    game_state.player1.player_buttons.up,
+                    game_state.player1.player_buttons.down,
+                    game_state.player1.player_buttons.right,
+                    game_state.player1.player_buttons.left,
+                    game_state.player2.player_id,
+                    game_state.player2.health,
+                    game_state.player2.x_coord,
+                    game_state.player2.y_coord,
+                    game_state.player2.is_jumping,
+                    game_state.player2.is_crouching,
+                    game_state.player2.is_player_in_move,
+                    game_state.player2.move_id,
+                    game_state.player2.player_buttons.up,
+                    game_state.player2.player_buttons.down,
+                    game_state.player2.player_buttons.right,
+                    game_state.player2.player_buttons.left
+                ])
 
     def fight(self, current_game_state, player):
         """Main fight logic."""
-        # Log the current game state to the CSV file
+        # Log the current game state to the CSV file only if a move is made
         self.log_game_state(current_game_state)
 
         # Reset buttons at the start of each frame
